@@ -1,12 +1,21 @@
 import React, { Component } from 'react'
 
 export default class loginForm extends Component {
+    handleSubmit = e => {
+        e.preventDefault()
+
+        // Call the server
+        console.log('Submitted')
+    }
+
     render() {
         return (
             // Select text to wrap -> CTRL+SHIFT+P -> Write wrap
+
+
             <div>
                 <h1>Login</h1>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <div className="mb-3">
                         {/* Recordemos que JSX es mas cercano a Javascript que ha HTML, por lo tanto no podemos usar 'for' porque
                         eso es una palabra reservada para el 'for loop' por eso cuando queramos usar el atributo 'for' de los
