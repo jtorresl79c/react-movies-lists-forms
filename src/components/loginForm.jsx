@@ -16,7 +16,7 @@ export default class loginForm extends Component {
     handleChange = e => {
         const account = { ...this.state.account }
 
-        account.username = e.currentTarget.value
+        account[e.currentTarget.name] = e.currentTarget.value
         console.log(account)
         this.setState({account})
     }
@@ -25,7 +25,7 @@ export default class loginForm extends Component {
         e.preventDefault()
 
         // Call the server
-        const username = this.username.current.value // Refs
+        const username = this.state.account.username
         console.log(username)
     }
 
@@ -42,11 +42,11 @@ export default class loginForm extends Component {
                         eso es una palabra reservada para el 'for loop' por eso cuando queramos usar el atributo 'for' de los
                         label de html, en vez de poner 'for' se usa el 'htmlFor' */}
                         <label htmlFor="username" className="form-label">Username</label>
-                        <input type="text" className="form-control" id="username" value={this.state.account.username} onChange={ this.handleChange  } />
+                        <input type="text" name="username" className="form-control" id="username" value={this.state.account.username} onChange={ this.handleChange  } />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
-                        <input type="password" className="form-control" id="password" />
+                        <input type="password" name="password" value={this.state.account.password} onChange={ this.handleChange  } className="form-control" id="password" />
                     </div>
                     <button type="submit" className="btn btn-primary">Login</button>
                 </form>
