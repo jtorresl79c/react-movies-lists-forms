@@ -13,10 +13,10 @@ export default class loginForm extends Component {
     }
 
 
-    handleChange = e => {
+    handleChange = ( { currentTarget: input } ) => { // ': input' es como si fuera un 'as', por lo que es un alias
         const account = { ...this.state.account }
 
-        account[e.currentTarget.name] = e.currentTarget.value
+        account[input.name] = input.value
         console.log(account)
         this.setState({account})
     }
@@ -30,9 +30,9 @@ export default class loginForm extends Component {
     }
 
     render() {
+        const { account } = this.state
         return (
             // Select text to wrap -> CTRL+SHIFT+P -> Write wrap
-
 
             <div>
                 <h1>Login</h1>
@@ -42,11 +42,11 @@ export default class loginForm extends Component {
                         eso es una palabra reservada para el 'for loop' por eso cuando queramos usar el atributo 'for' de los
                         label de html, en vez de poner 'for' se usa el 'htmlFor' */}
                         <label htmlFor="username" className="form-label">Username</label>
-                        <input type="text" name="username" className="form-control" id="username" value={this.state.account.username} onChange={ this.handleChange  } />
+                        <input type="text" name="username" className="form-control" id="username" value={account.username} onChange={ this.handleChange  } />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
-                        <input type="password" name="password" value={this.state.account.password} onChange={ this.handleChange  } className="form-control" id="password" />
+                        <input type="password" name="password" value={account.password} onChange={ this.handleChange  } className="form-control" id="password" />
                     </div>
                     <button type="submit" className="btn btn-primary">Login</button>
                 </form>
