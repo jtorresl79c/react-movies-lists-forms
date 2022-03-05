@@ -17,7 +17,6 @@ export default class loginForm extends Component {
 
     handleChange = ({ currentTarget: input }) => { // ': input' es como si fuera un 'as', por lo que es un alias
         const account = { ...this.state.account }
-
         account[input.name] = input.value
         console.log(account)
         this.setState({ account })
@@ -40,15 +39,16 @@ export default class loginForm extends Component {
         e.preventDefault()
 
         const errors = this.validate()
-        console.log(errors)
+        // console.log(errors)
         // ¿Porque ponemos 'errors: errors || {}'?, tiene que ver con #TSEUN543, especificamente cuando ponemos errors.username, digamos que tenemos 
         // 'this.setState({ errors })', this.validate nos regresara un objeto con propiedades O un null, si nos regresa un objeto con propiedades al
         // poner errors.username (aunque no exista la propiedad username y solo exista la propiedad password) o se imprime el valor de la propiedad o
-        // simplemente se imprimira undefined (porque si no esta la propiedad pues retorna eso) PERO si this.validate() retorna un null, cuando se
+        // simplemente se imprimira undefined (porque si no esta la propiedad pues retorna eso, un undefined) PERO si this.validate() retorna un null, cuando se
         // ponga errors.username es como si pusieramos null.username, eso es TOTALMENTE diferente a que si pusieramos {}.username, el primero (null.username)
         // no tiene sentido y obviamente retornara un error EN CAMBIO {}.username solo retornara undefined y no se vera nada en pantalla, es porque que no
         // no podemos poner simplemente 'this.setState({ errors })', porque si no existen errores estariamos poniento 'this.state({ null })'. Es por eso que
-        // ponemos el ||, si es null automaticamente ponemos un objeto en blanco y si no pues se pone el objeto errors con sus respectivos mensajes de errores
+        // ponemos el ||, si es null automaticamente ponemos un objeto en blanco y si no pues se pone el objeto errors con sus respectivos propiedades que nos
+        // indican los errores
         this.setState({ errors: errors || {} })
         if(errors) return
 
@@ -58,7 +58,7 @@ export default class loginForm extends Component {
     }
 
     render() {
-        const { account } = this.state
+        const { account, errors } = this.state
         return (
             // Select text to wrap -> CTRL+SHIFT+P -> Write wrap
 
@@ -75,11 +75,10 @@ export default class loginForm extends Component {
                     </div> */}
 
                     {/* El codigo de los input es muy repetitivo, por lo que podemos pasarlo a un componente */}
-                    <Input name="username" label="Username" onChange={this.handleChange} value={this.state.account.username} />
                     {/* #TSEUN543 */}
-                    { !(this.state.errors.username == null) ? this.state.errors.username : null }
+                    <Input name="username" label="Username" onChange={this.handleChange} value={account.username} error={errors.username} />
 
-                    <Input name="password" label="Password" onChange={this.handleChange} value={this.state.account.password} />
+                    <Input name="password" label="Password" onChange={this.handleChange} value={account.password} error={errors.password} />
 
 
                     <button className="btn btn-primary">Login</button>
