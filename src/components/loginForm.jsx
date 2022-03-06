@@ -14,17 +14,35 @@ export default class loginForm extends Component {
 
     }
 
+    validateInput(inputName){
+        const { account } = this.state
+
+        const errors = { ...this.state.errors }
+        if(account[inputName].trim() === ''){
+    
+            errors[inputName] = `${inputName} is required`
+    
+            this.setState({errors})
+        }else{
+            delete errors[inputName]
+            this.setState({errors})
+        }
+
+    }
+
 
     handleChange = ({ currentTarget: input }) => { // ': input' es como si fuera un 'as', por lo que es un alias
+        // input = event, input es el objeto event, solo que aqui lo estamos destructurando
+        console.log(input)
         const account = { ...this.state.account }
         account[input.name] = input.value
         console.log(account)
-        // this.setState({errors})errors
         this.setState({ account }, () => {
-            let errors = this.validate()
-            errors = errors === null ? {} : errors
-            this.setState({errors})
-            console.log(this.state.errors)
+            // let errors = this.validate()
+            // errors = errors === null ? {} : errors
+            // this.setState({errors})
+            // console.log(this.state.errors)
+            this.validateInput(input.name)
         })
         
     }
