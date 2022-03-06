@@ -19,7 +19,14 @@ export default class loginForm extends Component {
         const account = { ...this.state.account }
         account[input.name] = input.value
         console.log(account)
-        this.setState({ account })
+        // this.setState({errors})errors
+        this.setState({ account }, () => {
+            let errors = this.validate()
+            errors = errors === null ? {} : errors
+            this.setState({errors})
+            console.log(this.state.errors)
+        })
+        
     }
 
     validate = () => {
@@ -59,6 +66,7 @@ export default class loginForm extends Component {
 
     render() {
         const { account, errors } = this.state
+        // console.log(Object.keys(errors).length)
         return (
             // Select text to wrap -> CTRL+SHIFT+P -> Write wrap
 
@@ -81,7 +89,7 @@ export default class loginForm extends Component {
                     <Input name="password" label="Password" onChange={this.handleChange} value={account.password} error={errors.password} />
 
 
-                    <button className="btn btn-primary">Login</button>
+                    <button className="btn btn-primary" disabled={ !(Object.keys(errors).length === 0) }>Login</button>
                 </form>
             </div>
         )
