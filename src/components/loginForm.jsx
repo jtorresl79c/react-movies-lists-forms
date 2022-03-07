@@ -6,7 +6,7 @@ export default class loginForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            account: { username: '', password: '' },
+            data: { username: '', password: '' },
             errors: {}
         }
     }
@@ -53,10 +53,10 @@ export default class loginForm extends Component {
         if(errorMessage) errors[input.name] = errorMessage
         else delete errors[input.name]
 
-        const account = { ...this.state.account }
-        account[input.name] = input.value
-        // console.log(account)
-        this.setState({ account, errors })
+        const data = { ...this.state.data }
+        data[input.name] = input.value
+        // console.log(data)
+        this.setState({ data, errors })
         
     }
 
@@ -66,7 +66,7 @@ export default class loginForm extends Component {
         }
         
         // antes estaba como const result, pero es mejor destructurarlo a { error }, al fin de cuentas el que nos importa es la propiedad error
-        const {error} = Joi.validate(this.state.account, this.schema, options) 
+        const {error} = Joi.validate(this.state.data, this.schema, options) 
         // objecto que queremos validar, el schema creado arriba en donde el nombre de las propiedades validades deben de ser igual en los dos
         // y el tercero es porque cuando Joi.validate se ejecuta y encuentra un error de validacion es como un break, ya no sigue evaluando
         // si queremos que siga la evaluacion y no detenga el codigo, se pone abortEarly: false
@@ -104,12 +104,12 @@ export default class loginForm extends Component {
         if(errors) return
 
         // Call the server
-        const username = this.state.account.username
+        const username = this.state.data.username
         console.log(username)
     }
 
     render() {
-        const { account, errors } = this.state
+        const { data, errors } = this.state
         // console.log(Object.keys(errors).length)
         return (
             // Select text to wrap -> CTRL+SHIFT+P -> Write wrap
@@ -119,18 +119,18 @@ export default class loginForm extends Component {
                 <form onSubmit={this.handleSubmit}>
                     {/* <div className="mb-3">
                         <label htmlFor="username" className="form-label">Username</label>
-                        <input type="text" name="username" className="form-control" id="username" value={account.username} onChange={ this.handleChange  } />
+                        <input type="text" name="username" className="form-control" id="username" value={data.username} onChange={ this.handleChange  } />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="password" className="form-label">Password</label>
-                        <input type="password" name="password" value={account.password} onChange={ this.handleChange  } className="form-control" id="password" />
+                        <input type="password" name="password" value={data.password} onChange={ this.handleChange  } className="form-control" id="password" />
                     </div> */}
 
                     {/* El codigo de los input es muy repetitivo, por lo que podemos pasarlo a un componente */}
                     {/* #TSEUN543 */}
-                    <Input name="username" label="Username" onChange={this.handleChange} value={account.username} error={errors.username} />
+                    <Input name="username" label="Username" onChange={this.handleChange} value={data.username} error={errors.username} />
 
-                    <Input name="password" label="Password" onChange={this.handleChange} value={account.password} error={errors.password} />
+                    <Input name="password" label="Password" onChange={this.handleChange} value={data.password} error={errors.password} />
 
 
                     <button className="btn btn-primary" disabled={ this.validate() }>Login</button>
