@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Joi from 'joi-browser'
 import Input from './common/input'
 
 export default class loginForm extends Component {
@@ -10,53 +11,79 @@ export default class loginForm extends Component {
         }
     }
 
+    schema =  {
+        username: Joi.string().required().label('Username'), // .label solo cambia la primera palabra, la primera palara es el nombre de la propiedad, por default
+        // se mostraria -- "username" is not allowed to be empty -- PERO al poner label() ahora se ve -- "Username" is not allowed to be empty -- 
+        // mismo caso para password (la propiedad abajo)
+        password: Joi.string().required().label('Password')
+    }
+
     componentDidMount() {
 
     }
 
-    validateInput({ name: inputName, value }){
-        // const { account } = this.state
-        console.log(inputName, value)
+    validateProperty = ({ name: inputName, value: inputValue }) => { // Antes tenia el nombre de validateInput - inputValue = lo que se escribio
+        const obj = { [inputName]: inputValue }
+        const schema = { [inputName] : this.schema[inputName] }
+        // const options = {
+        //     abortEarly: false
+        // }
 
-        const errors = { ...this.state.errors }
-        if(value.trim() === ''){
-    
-            errors[inputName] = `${inputName} is required`
-    
-            this.setState({errors})
-        }else{
-            delete errors[inputName]
-            this.setState({errors})
-        }
+        
 
+        const {error} = Joi.validate(obj, schema) // podriamos pensar que se nos olvido pasar 'options' pero no es asi, cuando se hacia la validacion al 
+        // presionar el boton de Login, nosotros queremos que se evalue TODO porque al hacer eso se consiguen todos los mensajes de error, si no lo poniamos,
+        // al detectar el primer input vacio ya no evaluaba los demas inputs y solo evaluaba el primero, pero cuando pasamos el tercer argumento options forzabamos
+        // a que se evaluara completamente todos los inputs, en este caso siempre estaremos validando solo uno y por lo tanto el tercer argumento no nos brinda
+        // ninguna ayuda y seria inecesario
+
+        return (error ? error.details[0].message : null)
+
+        // return error.details
+
+        // return null || message - Lo que tiene que retornar esta funcion
     }
 
 
     handleChange = ({ currentTarget: input }) => { // ': input' es como si fuera un 'as', por lo que es un alias
-        // input = event, input es el objeto event, solo que aqui lo estamos destructurando - currentTarget retorna el element
-        // en este caso element es igual a 'input'
-        // console.log(input)
-
-        this.validateInput(input)
+        // input = event, input es el objeto event, solo que aqui lo estamos destructurando - currentTarget retorna el element // en este caso element es igual a 'input'
+        
+        const errors = { ...this.state.errors }
+        const errorMessage = this.validateProperty(input)
+        if(errorMessage) errors[input.name] = errorMessage
+        else delete errors[input.name]
 
         const account = { ...this.state.account }
         account[input.name] = input.value
-        console.log(account)
-        this.setState({ account })
+        // console.log(account)
+        this.setState({ account, errors })
         
     }
 
     validate = () => {
+        const options = {
+            abortEarly: false
+        }
+        
+        // antes estaba como const result, pero es mejor destructurarlo a { error }, al fin de cuentas el que nos importa es la propiedad error
+        const {error} = Joi.validate(this.state.account, this.schema, options) 
+        // objecto que queremos validar, el schema creado arriba en donde el nombre de las propiedades validades deben de ser igual en los dos
+        // y el tercero es porque cuando Joi.validate se ejecuta y encuentra un error de validacion es como un break, ya no sigue evaluando
+        // si queremos que siga la evaluacion y no detenga el codigo, se pone abortEarly: false
+
+        // result.error = null || result.error = {properties} - posibles resultados de result.error
+
+        // result retorna un objeto con varias propiedades, la que nos interesa por ahora es la propiedad error, esta propiedad retorna un null
+        // si no hay ningun problema de validacion (que se pusieron dentro del obj schema) PERO si existen problemas de validacion esta propiedad
+        // error retorna un obj con varias propiedades, de aqui en adelante nos enfocaremos en dicho objeecti
+        
+        //Quiero que retornes null SI result.error es NULL, como null es falsy ponemoms el !, de esta forma lo logramos
+        if(!error) return null // result.error puede retornar null o un obj, si es null sabemos que se toma como falsy y su es una propiedad lo toma como truty
+        // retornamos null si no existen errores, por lo tanto todo el codigo de abajo tenemos la certeza que solo se ejecutara cuando HAY errores
+
         const errors = {}
-        const { account } = this.state
-
-        if(account.username.trim() === '')
-            errors.username = 'Username is required.'
-        if(account.password.trim() === '')
-            errors.password = 'Password is required'
-
-        // return { username: 'Username is required.' }
-        return Object.keys(errors).length === 0 ? null : errors
+        for(let item of error.details) errors[item.path[0]] = item.message
+        return errors
     }
 
     handleSubmit = e => {
@@ -106,7 +133,7 @@ export default class loginForm extends Component {
                     <Input name="password" label="Password" onChange={this.handleChange} value={account.password} error={errors.password} />
 
 
-                    <button className="btn btn-primary" disabled={ !(Object.keys(errors).length === 0) }>Login</button>
+                    <button className="btn btn-primary" disabled={ this.validate() }>Login</button>
                 </form>
             </div>
         )
