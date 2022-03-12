@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Joi from 'joi-browser'
 import Forms from './common/form'
-import Input from './common/input'
+
 
 export default class loginForm extends Forms {
     constructor(props) {
@@ -29,7 +29,7 @@ export default class loginForm extends Forms {
     }
 
     render() {
-        const { data, errors } = this.state
+        // const { data, errors } = this.state
         // console.log(Object.keys(errors).length)
         return (
             // Select text to wrap -> CTRL+SHIFT+P -> Write wrap
@@ -48,9 +48,12 @@ export default class loginForm extends Forms {
 
                     {/* El codigo de los input es muy repetitivo, por lo que podemos pasarlo a un componente */}
                     {/* #TSEUN543 */}
-                    <Input name="username" label="Username" onChange={this.handleChange} value={data.username} error={errors.username} />
+                    {/* <Input name="username" label="Username" onChange={this.handleChange} value={data.username} error={errors.username} /> */}
+                    {/* <Input name="password" label="Password" onChange={this.handleChange} value={data.password} error={errors.password} /> */}
 
-                    <Input name="password" label="Password" onChange={this.handleChange} value={data.password} error={errors.password} />
+                    {/* Ahora para renderizar los Inputs se manda a llamar a una funcion que esta en form.jsx */}
+                    {this.renderInput('username', 'Username')}
+                    {this.renderInput('password', 'Password')}
 
 
                     {this.renderButton('Login')}
