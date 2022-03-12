@@ -102,7 +102,7 @@ export default class form extends Component {
         return <button className="btn btn-primary" disabled={this.validate()}>{label}</button>;
     }
 
-    renderInput = (name,label) => {
+    renderInput = (name,label, type = 'text') => {
         const { data, errors } = this.state
         return (
             <Input
@@ -111,6 +111,7 @@ export default class form extends Component {
                 onChange={this.handleChange}
                 value={data[name]}
                 error={errors[name]}
+                type={type}
             />
         )
     }

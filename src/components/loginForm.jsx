@@ -53,7 +53,7 @@ export default class loginForm extends Forms {
 
                     {/* Ahora para renderizar los Inputs se manda a llamar a una funcion que esta en form.jsx */}
                     {this.renderInput('username', 'Username')}
-                    {this.renderInput('password', 'Password')}
+                    {this.renderInput('password', 'Password', 'password')}
 
 
                     {this.renderButton('Login')}
