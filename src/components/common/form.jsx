@@ -96,4 +96,8 @@ export default class form extends Component {
         this.setState({ data, errors })
 
     }
+
+    renderButton = label => {
+        return <button className="btn btn-primary" disabled={this.validate()}>{label}</button>;
+    }
 }

@@ -53,7 +53,7 @@ export default class loginForm extends Forms {
                     <Input name="password" label="Password" onChange={this.handleChange} value={data.password} error={errors.password} />
 
 
-                    <button className="btn btn-primary" disabled={this.validate()}>Login</button>
+                    {this.renderButton('Login')}
                 </form>
             </div>
         )
