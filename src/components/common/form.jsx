@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Joi from 'joi-browser'
 import Input from './input'
+import Select from './select'
 
 export default class form extends Component {
     constructor(props) {
@@ -14,13 +15,17 @@ export default class form extends Component {
     validateProperty = ({ name: inputName, value: inputValue }) => { // Antes tenia el nombre de validateInput - inputValue = lo que se escribio
         const obj = { [inputName]: inputValue }
         const schema = { [inputName]: this.schema[inputName] }
-        // const options = {
-        //     abortEarly: false
-        // }
+        const options = {
+            // abortEarly: false
+            // language: {
+            //     any: { empty: 'no puede estar vacio' },
+            //     string: { empty: 'cosmico' },
+            // },
+        }
 
 
 
-        const { error } = Joi.validate(obj, schema) // podriamos pensar que se nos olvido pasar 'options' pero no es asi, cuando se hacia la validacion al 
+        const { error } = Joi.validate(obj, schema) // podriamos pensar que se nos olvido pasar 'options.abortEarly' pero no es asi, cuando se hacia la validacion al 
         // presionar el boton de Login, nosotros queremos que se evalue TODO porque al hacer eso se consiguen todos los mensajes de error, si no lo poniamos,
         // al detectar el primer input vacio ya no evaluaba los demas inputs y solo evaluaba el primero, pero cuando pasamos el tercer argumento options forzabamos
         // a que se evaluara completamente todos los inputs, en este caso siempre estaremos validando solo uno y por lo tanto el tercer argumento no nos brinda
@@ -98,6 +103,20 @@ export default class form extends Component {
 
     }
 
+    handleChangeSelect = ({ currentTarget: input }, selectedPropertyName) => {
+        // console.log('energia electrica')
+        // console.log(input)
+
+        const id = input.value
+        const name = input.name
+
+        const data = { ...this.state.data }
+
+        data[selectedPropertyName] = id
+
+        this.setState( { data } )
+    }
+
     renderButton = label => {
         return <button className="btn btn-primary" disabled={this.validate()}>{label}</button>;
     }
@@ -114,5 +133,9 @@ export default class form extends Component {
                 type={type}
             />
         )
+    }
+
+    renderSelect = (label,name,selectedPropertyName ,data) => {
+        return <Select label={label} name={name} data={data} onChange={this.handleChangeSelect} value={this.state.data[selectedPropertyName]} selectedPropertyName={selectedPropertyName}></Select>
     }
 }
