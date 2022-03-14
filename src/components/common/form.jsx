@@ -15,13 +15,13 @@ export default class form extends Component {
     validateProperty = ({ name: inputName, value: inputValue }) => { // Antes tenia el nombre de validateInput - inputValue = lo que se escribio
         const obj = { [inputName]: inputValue }
         const schema = { [inputName]: this.schema[inputName] }
-        const options = {
-            // abortEarly: false
-            // language: {
-            //     any: { empty: 'no puede estar vacio' },
-            //     string: { empty: 'cosmico' },
-            // },
-        }
+        // const options = {
+        //     // abortEarly: false
+        //     // language: {
+        //     //     any: { empty: 'no puede estar vacio' },
+        //     //     string: { empty: 'cosmico' },
+        //     // },
+        // }
 
 
 
@@ -108,7 +108,7 @@ export default class form extends Component {
         // console.log(input)
 
         const id = input.value
-        const name = input.name
+        // const name = input.name
 
         const data = { ...this.state.data }
 

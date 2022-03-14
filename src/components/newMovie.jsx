@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Form from './common/form'
 import Joi from 'joi-browser'
 import { getGenres } from '../services/fakeGenreService'
+import {saveMovie} from '../services/fakeMovieService'
 
 export default class newMovie extends Form {
     constructor(props) {
@@ -41,8 +42,23 @@ export default class newMovie extends Form {
     // doSubmit() tambien tiene que estar siempre, porque no siempre vamos a querer hacer lo mismo cuando enviemos un 
     // formulario (tambien porque al darle submit este se ejecuta en el form.jsx)
     doSubmit = () => {
-        const title = this.state.data.title
-        console.log(title)
+        // const title = this.state.data.title
+        const { data } = this.state
+        let movie = {}
+
+        movie._id = null
+        movie.title = data.title
+        movie.genreId = data.selectedGenre
+        movie.numberInStock = data.stock
+        movie.dailyRentalRate = data.rate
+
+        console.log(movie)
+        // Cuando se guarda un nuevo movie usando saveMovie() y retornemos a /movies (en donde esta el filtro) el movie agregado al array
+        // de movies que esta en fakeMovieService.js AUN SEGUIRA, algo nuevo que acabamos de aprender, si bien en movies.jsx y newMovie.jsx
+        // usando su propio import n from '../services/fakeMovieService' al parecer en js funciona como si fuera vuex o redux, osea que se
+        // es persistente la data, eso quiere decir que no necesitamos vuex o redux OBLIGATORIAMENTE para conseguir un resultado similiar
+        // y que con vanilla js podemos lograr algo parecido.
+        console.log(saveMovie(movie))
     }
 
     render() {

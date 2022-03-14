@@ -23,6 +23,13 @@ class Movies extends Component {
         this.setState({ movies: getMovies(), genres });
     }
 
+    // Esto elimina un movie del array de movies PERO del array de movies LOCAL no GLOBAL (siendo el array global lo que esta 
+    // dentro de import { getMovies } from "../services/fakeMovieService") y es el local porque vemos que mandamos a llamar al
+    // this.state.movies, podemos ver que esto es una COPIA del array movies del fakeMovieService porque se manda a llamar a
+    // getMovies(), por ello a diferencia de newMovie.doSubmit() (el cual guardaba un movie en el array de movies global y al
+    // cambiar de pagina la data era persistence y se seguia viendo el movie agregado) PERO aqui si nosotros eliminamos una pelicula
+    // y navegamos de una pagina a otra Y REGRESAMOS a /movies EL MOVIE RECIEN ELIMINADO VOLVERA A APARECER y esto por lo mismo, 
+    // estamos manipulando el array de movies local en vez del global que esta dentro del fakeMovieService.js.
     handleDelete = movie => {
         const movies = this.state.movies.filter(m => m._id !== movie._id);
         this.setState({ movies });
