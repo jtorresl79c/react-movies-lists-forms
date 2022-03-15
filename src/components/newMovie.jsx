@@ -59,6 +59,8 @@ export default class newMovie extends Form {
         // es persistente la data, eso quiere decir que no necesitamos vuex o redux OBLIGATORIAMENTE para conseguir un resultado similiar
         // y que con vanilla js podemos lograr algo parecido.
         console.log(saveMovie(movie))
+
+        this.props.history.push("/movies")
     }
 
     render() {
