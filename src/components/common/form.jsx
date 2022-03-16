@@ -121,7 +121,7 @@ export default class form extends Component {
         return <button className="btn btn-primary" disabled={this.validate()}>{label}</button>;
     }
 
-    renderInput = (name,label, type = 'text') => {
+    renderInput = (name,label, type = 'text', value = "") => {
         const { data, errors } = this.state
         return (
             <Input
