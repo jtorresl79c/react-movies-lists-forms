@@ -70,7 +70,11 @@ export default class movieForm extends Form {
     }
 
     componentDidMount(){
-        if(!getMovie(this.props.match.params.id)) return <Redirect to="/notfound"/>
+        if(!getMovie(this.props.match.params.id)){
+            // console.log('reedireccionar')
+            // return <Redirect to="/not-found"/>
+            return this.props.history.replace('/not-found')
+        }
         let movie = getMovie(this.props.match.params.id)
 
         // data: { title: '', stock: '', rate: '', selectedGenre: '0' }
