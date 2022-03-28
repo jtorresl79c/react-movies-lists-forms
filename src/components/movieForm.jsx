@@ -78,22 +78,36 @@ export default class movieForm extends Form {
         if(!getMovie(this.props.match.params.id)){
             // console.log('reedireccionar')
             // return <Redirect to="/not-found"/>
-            return this.props.history.replace('/not-found')
+            return this.props.history.replace('/not-found') // Se uso replace en vez de push, porque con push al momento de darle para atras existiria un 
+            // loop infinito
         }
         let movie = getMovie(this.props.match.params.id)
 
-        // data: { title: '', stock: '', rate: '', selectedGenre: '0' }
+        // Esta parte comentada funciona, y es como le hacemos siempre, pero aqui Mosh lo que hace es estructurar de una mejor
+        // manera el arreglo de lo obtenido por una api, utilizando una funcion que hace la conversion de manera automatica mapToViewModel(movie)
+        // let data = { ...this.state.data }
+        // data.title = movie.title
+        // data.stock = movie.numberInStock
+        // data.rate = movie.dailyRentalRate
+        // data.selectedGenre = movie.genre._id
+        // this.setState( {data} )
 
-        let data = { ...this.state.data }
+        // En vez de poner el codigo de creacion del objeto que ocupamos aqui en esta seccion, se hace por medio de la funcion
+        // this.mapToViewModel
+        let data = this.mapToViewModel(movie)
 
-        data.title = movie.title
-        data.stock = movie.numberInStock
-        data.rate = movie.dailyRentalRate
-        data.selectedGenre = movie.genre._id
+        this.setState( { data } )
 
-        this.setState( {data} )
 
-        console.log(data)
+    }
+
+    mapToViewModel(movie) {
+        return {
+            title: movie.title,
+            stock: movie.numberInStock,
+            rate: movie.dailyRentalRate,
+            selectedGenre: movie.genre._id
+        }
     }
 
     checkIfMovieExists = (movieid) => {
