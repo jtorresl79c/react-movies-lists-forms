@@ -114,14 +114,14 @@ export default class form extends Component {
 
         data[selectedPropertyName] = id
 
-        this.setState( { data } )
+        this.setState({ data })
     }
 
     renderButton = label => {
         return <button className="btn btn-primary" disabled={this.validate()}>{label}</button>;
     }
 
-    renderInput = (name,label, type = 'text', value = "") => {
+    renderInput = (name, label, type = 'text', value = "") => {
         const { data, errors } = this.state
         return (
             <Input
@@ -135,7 +135,17 @@ export default class form extends Component {
         )
     }
 
-    renderSelect = (label,name,selectedPropertyName ,data) => {
-        return <Select label={label} name={name} data={data} onChange={this.handleChangeSelect} value={data[selectedPropertyName]} selectedPropertyName={selectedPropertyName}></Select>
+    renderSelect = (label, name, selectedPropertyName, data) => {
+        // En el video tambien se envia: errors[name], nosotros no lo hacemos porque si es 0 simeplemente el form no se puede mandar, es muy dificil que se requiera,
+        // de igual forma se puede poner y acomodar el codigo para que se imprima el error 
+        return (
+            <Select label={label}
+                name={name}
+                data={data}
+                onChange={this.handleChangeSelect}
+                value={data[selectedPropertyName]}
+                selectedPropertyName={selectedPropertyName}
+            />
+        );
     }
 }
