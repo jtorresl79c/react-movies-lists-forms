@@ -13,7 +13,10 @@ export default class movieForm extends Form {
             // this.data SIEMPRE debe de existir, pero lo que esta dentro puede tener el nombre que querramos
             data: { title: '', stock: '', rate: '', selectedGenre: '0' },
             errors: {},
-            genres: getGenres() || []
+            // genres: getGenres() || [], // Esto funciona, el problema es que es un ejemplo para este proyecto
+            // sabemos que lo mas normal es mandar a pedir la info a una api, y esa llamada lo hacemos desde el 
+            // componentDidMount()
+            genres: []
         }
     }
 
@@ -70,6 +73,8 @@ export default class movieForm extends Form {
     }
 
     componentDidMount(){
+        // Esta es una forma mas convencional de llenar una variable del state
+        this.state.genres = getGenres()
         if(!getMovie(this.props.match.params.id)){
             // console.log('reedireccionar')
             // return <Redirect to="/not-found"/>
