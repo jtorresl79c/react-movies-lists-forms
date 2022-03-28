@@ -54,6 +54,18 @@ export default class movieForm extends Form {
         // data.rate = movie.dailyRentalRate
         // data.selectedGenre = movie.genre._id
 
+        let movie = {}
+        movie._id = this.props.match.params.id
+        movie.title = this.state.data.title
+        movie.genreId = this.state.data.selectedGenre
+        movie.numberInStock = this.state.data.stock
+        movie.dailyRentalRate = this.state.data.rate
+        console.log(movie)
+        
+        // Para guardar los cambios se utiliza la funcion saveMovie del fakeMovieService.js
+        saveMovie(movie)
+
+
         this.props.history.push("/movies")
     }
 

@@ -1,3 +1,4 @@
+import movieForm from "../components/movieForm";
 import * as genresAPI from "./fakeGenreService";
 
 const movies = [
@@ -77,12 +78,21 @@ export function getMovie(id) {
 }
 
 export function saveMovie(movie) {
+
+    // Aqui podremos tener confusiones, movies.find CREA UNA REFERENCIA NO UNA COPIA del array global 'movies', es por ello
+    // que cuando la funcion termina de ejecutarse los cambios se quedaran guardados en el array sin necesidad de hacer
+    // algo extra
     let movieInDb = movies.find(m => m._id === movie._id) || {};
     movieInDb.title = movie.title;
     movieInDb.genre = genresAPI.genres.find(g => g._id === movie.genreId);
     movieInDb.numberInStock = movie.numberInStock;
     movieInDb.dailyRentalRate = movie.dailyRentalRate;
 
+    // La clave esta en entender que movieInDb es una referencia al array global movies, y es por eso que al salir de la
+    // pagina movieForm.jsx la informacion es 'persistente', anteriormente teniamos la idea de que al movernos de pagina
+    // (.push('/link')) la info no era persistente, cosa erronea, ya que al final de cuaentas no estamos recargando la
+    // pagina, ironicamente no entendiamos aun a pesar de que estabamos completamente de acuerdo en que se agregara un 
+    // nuevo array ( movies.push(movieInDb) ) y que este no iba a desaparecer.
     if (!movieInDb._id) {
         movieInDb._id = Date.now().toString();
         movies.push(movieInDb);

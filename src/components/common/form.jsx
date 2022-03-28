@@ -136,6 +136,6 @@ export default class form extends Component {
     }
 
     renderSelect = (label,name,selectedPropertyName ,data) => {
-        return <Select label={label} name={name} data={data} onChange={this.handleChangeSelect} value={this.state.data[selectedPropertyName]} selectedPropertyName={selectedPropertyName}></Select>
+        return <Select label={label} name={name} data={data} onChange={this.handleChangeSelect} value={data[selectedPropertyName]} selectedPropertyName={selectedPropertyName}></Select>
     }
 }
