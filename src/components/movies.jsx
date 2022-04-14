@@ -2,11 +2,14 @@ import React, { Component } from "react";
 import MoviesTable from "./moviesTable";
 import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
-import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+// import { getMovies } from "../services/fakeMovieService";
+// import { getGenres } from "../services/fakeGenreService";
+import { getMovies } from "../services/movieService";
+import { getGenres } from "../services/genreService";
 import { paginate } from "../utils/paginate";
 import { Link } from "react-router-dom"; // NavLink
 import _ from "lodash";
+import httpServices from "../services/httpServices";
 
 class Movies extends Component {
     state = {
@@ -17,10 +20,15 @@ class Movies extends Component {
         sortColumn: { path: "title", order: "asc" }
     };
 
-    componentDidMount() {
-        const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
-
-        this.setState({ movies: getMovies(), genres });
+    async componentDidMount() {
+        // const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
+        // this.setState({ movies: getMovies(), genres });
+        // console.log("componentDidMount");
+        // const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
+        const { data: genresResponse } = await getGenres();
+        const genres = [{ _id: "", name: "All Genres" }, ...genresResponse];
+        const { data: movies } = await getMovies();
+        this.setState({ genres, movies });
     }
 
     // Esto elimina un movie del array de movies PERO del array de movies LOCAL no GLOBAL (siendo el array global lo que esta 
