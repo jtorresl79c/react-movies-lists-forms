@@ -10,12 +10,11 @@ export function getMovies() {
 }
 
 export function saveMovie(movie){
-    const movieid = movie._id ? movie._id : '';
+    const movieid = movie._id ? movie._id : false;
+    delete movie._id;
 
     if(movieid){
-        delete movie._id;
         return httpServices.put(`${config.apiEndpoint}movies/${movieid}`, movie);
     }
-
     return httpServices.post(`${config.apiEndpoint}movies`, movie);
 }

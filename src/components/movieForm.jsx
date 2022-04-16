@@ -78,7 +78,7 @@ export default class movieForm extends Form {
     async componentDidMount(){
         // Esta es una forma mas convencional de llenar una variable del state
         const { data: genres } = await getGenres()
-        this.state.genres = await genres
+        this.setState({ genres })
         // console.log('hola mundo xsadsad')
         // console.log(this.props.match.params.id)
         // console.log(genres)

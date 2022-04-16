@@ -1,8 +1,10 @@
 import React from 'react'
 import Form from './common/form'
 import Joi from 'joi-browser'
-import { getGenres } from '../services/fakeGenreService'
-import {saveMovie} from '../services/fakeMovieService'
+// import { getGenres } from '../services/fakeGenreService'
+// import {saveMovie} from '../services/fakeMovieService'
+import { getGenres } from '../services/genreService'
+import {saveMovie} from '../services/movieService'
 
 export default class newMovie extends Form {
     constructor(props) {
@@ -11,7 +13,7 @@ export default class newMovie extends Form {
             // this.data SIEMPRE debe de existir, pero lo que esta dentro puede tener el nombre que querramos
             data: { title: '', stock: '', rate: '', selectedGenre: '0' },
             errors: {},
-            genres: getGenres() || []
+            genres: []
         }
     }
 
@@ -19,12 +21,13 @@ export default class newMovie extends Form {
     // tambien porque form.jsx manda a llamar a this.schema, por lo que si lo omitimos el programa tronara
     schema = {
         title: Joi.string()
-            .required()
-            .label('Title'),
+            .min(5)
+            .max(50)
+            .required(),
         // .label solo cambia la primera palabra, la primera palara es el nombre de la propiedad, por default
         // se mostraria -- "title" is not allowed to be empty -- PERO al poner label() ahora se ve -- "title" is not allowed to be empty -- 
         // mismo caso para stock (la propiedad abajo)
-        selectedGenre: Joi.invalid('0'),
+        selectedGenre: Joi.invalid('0').required(),
         stock: Joi.number()
             .required()
             .integer()
@@ -39,9 +42,14 @@ export default class newMovie extends Form {
 
     }
 
+    async componentDidMount() {
+        const { data: genres } = await getGenres()
+        this.setState({ genres })
+    }
+
     // doSubmit() tambien tiene que estar siempre, porque no siempre vamos a querer hacer lo mismo cuando enviemos un 
     // formulario (tambien porque al darle submit este se ejecuta en el form.jsx)
-    doSubmit = () => {
+    doSubmit = async () => {
         // const title = this.state.data.title
         const { data } = this.state
         let movie = {}
@@ -58,7 +66,7 @@ export default class newMovie extends Form {
         // usando su propio import n from '../services/fakeMovieService' al parecer en js funciona como si fuera vuex o redux, osea que se
         // es persistente la data, eso quiere decir que no necesitamos vuex o redux OBLIGATORIAMENTE para conseguir un resultado similiar
         // y que con vanilla js podemos lograr algo parecido.
-        console.log(saveMovie(movie))
+        const movieid = await saveMovie(movie)
 
         this.props.history.push("/movies")
     }
