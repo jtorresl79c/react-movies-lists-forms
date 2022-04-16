@@ -1,8 +1,10 @@
 import React from 'react'
 import Form from './common/form'
 import Joi from 'joi-browser'
-import { getGenres } from '../services/fakeGenreService'
-import {saveMovie,getMovie} from '../services/fakeMovieService'
+// import { getGenres } from '../services/fakeGenreService'
+import { getGenres } from '../services/genreService'
+// import {saveMovie,getMovie} from '../services/fakeMovieService'
+import {saveMovie,getMovie} from '../services/movieService'
 import { Redirect } from "react-router-dom"
 import Movies from './movies'
 
@@ -73,16 +75,23 @@ export default class movieForm extends Form {
         this.props.history.push("/movies")
     }
 
-    componentDidMount(){
+    async componentDidMount(){
         // Esta es una forma mas convencional de llenar una variable del state
-        this.state.genres = getGenres()
-        if(!getMovie(this.props.match.params.id)){
+        const { data: genres } = await getGenres()
+        this.state.genres = await genres
+        // console.log('hola mundo xsadsad')
+        // console.log(this.props.match.params.id)
+        // console.log(genres)
+        // console.log('conejo')
+        const { data: movie } = await getMovie(this.props.match.params.id)
+        console.log(movie)
+        if(!movie){
             // console.log('reedireccionar')
             // return <Redirect to="/not-found"/>
             return this.props.history.replace('/not-found') // Se uso replace en vez de push, porque con push al momento de darle para atras existiria un 
             // loop infinito
         }
-        let movie = getMovie(this.props.match.params.id)
+        // let movie = getMovie(this.props.match.params.id)
 
         // Esta parte comentada funciona, y es como le hacemos siempre, pero aqui Mosh lo que hace es estructurar de una mejor
         // manera el arreglo de lo obtenido por una api, utilizando una funcion que hace la conversion de manera automatica mapToViewModel(movie)
@@ -98,7 +107,6 @@ export default class movieForm extends Form {
         let data = this.mapToViewModel(movie)
 
         this.setState( { data } )
-
 
     }
 
@@ -119,7 +127,6 @@ export default class movieForm extends Form {
 
     render() {
         let genres = this.state.genres
-        
 
         return (
             <div>

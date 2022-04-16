@@ -1,4 +1,6 @@
 import httpServices from "./httpServices";
-export async function getGenres() {
-    return httpServices.get('http://localhost:3900/api/genres')
+import config from '../config.json';
+
+export function getGenres() {
+    return httpServices.get(`${config.apiEndpoint}genres`);
 }

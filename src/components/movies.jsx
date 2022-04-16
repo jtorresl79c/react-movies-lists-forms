@@ -9,7 +9,7 @@ import { getGenres } from "../services/genreService";
 import { paginate } from "../utils/paginate";
 import { Link } from "react-router-dom"; // NavLink
 import _ from "lodash";
-import httpServices from "../services/httpServices";
+// import httpServices from "../services/httpServices";
 
 class Movies extends Component {
     state = {
