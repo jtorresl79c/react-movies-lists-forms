@@ -4,7 +4,7 @@ import ListGroup from "./common/listGroup";
 import Pagination from "./common/pagination";
 // import { getMovies } from "../services/fakeMovieService";
 // import { getGenres } from "../services/fakeGenreService";
-import { getMovies } from "../services/movieService";
+import { deleteMovie, getMovies } from "../services/movieService";
 import { getGenres } from "../services/genreService";
 import { paginate } from "../utils/paginate";
 import { Link } from "react-router-dom"; // NavLink
@@ -16,7 +16,7 @@ class Movies extends Component {
         movies: [],
         genres: [],
         currentPage: 1,
-        pageSize: 4,
+        pageSize: 2,
         sortColumn: { path: "title", order: "asc" }
     };
 
@@ -38,9 +38,18 @@ class Movies extends Component {
     // cambiar de pagina la data era persistence y se seguia viendo el movie agregado) PERO aqui si nosotros eliminamos una pelicula
     // y navegamos de una pagina a otra Y REGRESAMOS a /movies EL MOVIE RECIEN ELIMINADO VOLVERA A APARECER y esto por lo mismo, 
     // estamos manipulando el array de movies local en vez del global que esta dentro del fakeMovieService.js.
-    handleDelete = movie => {
+    handleDelete = async movie => {
+        const originalMovies = this.state.movies;
         const movies = this.state.movies.filter(m => m._id !== movie._id);
         this.setState({ movies });
+        try {
+            const x = await deleteMovie(movie._id);
+        } catch (error) {
+            this.setState({ originalMovies });
+        }
+
+
+
     };
 
     handleLike = movie => {

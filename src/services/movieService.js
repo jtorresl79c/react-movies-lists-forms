@@ -18,3 +18,7 @@ export function saveMovie(movie){
     }
     return httpServices.post(`${config.apiEndpoint}movies`, movie);
 }
+
+export function deleteMovie(id) {
+    return httpServices.delete(`${config.apiEndpoint}movies/${id}`);
+}
