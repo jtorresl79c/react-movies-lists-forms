@@ -52,7 +52,7 @@ export default class newMovie extends Form {
         movie.numberInStock = data.stock
         movie.dailyRentalRate = data.rate
 
-        console.log(movie)
+        // console.log(movie)
         // Cuando se guarda un nuevo movie usando saveMovie() y retornemos a /movies (en donde esta el filtro) el movie agregado al array
         // de movies que esta en fakeMovieService.js AUN SEGUIRA, algo nuevo que acabamos de aprender, si bien en movies.jsx y newMovie.jsx
         // usando su propio import n from '../services/fakeMovieService' al parecer en js funciona como si fuera vuex o redux, osea que se

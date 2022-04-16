@@ -48,7 +48,7 @@ export default class movieForm extends Form {
 
     // doSubmit() tambien tiene que estar siempre, porque no siempre vamos a querer hacer lo mismo cuando enviemos un 
     // formulario (tambien porque al darle submit este se ejecuta en el form.jsx)
-    doSubmit = () => {
+    doSubmit = async () => {
         // Otra forma en la que lo podemos hacer
         // let data = { ...this.state.data }
         // data.title = movie.title
@@ -69,7 +69,7 @@ export default class movieForm extends Form {
         // que el saveMovie ocupa son iguales a los del data local, aqui no, los nombres de las propiedades locales del data son diferentes
         // a los que el saveMovie necesita, por eso se usa el codigo de las Lineas 57-63 (a lo mejor cambiar los numeros, el codigo de arriba
         // a eso me refiero)
-        saveMovie(movie)
+        const movieid = await saveMovie(movie, this.props.match.params.id)
 
 
         this.props.history.push("/movies")
