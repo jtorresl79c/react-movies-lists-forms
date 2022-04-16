@@ -95,11 +95,19 @@ class Movies extends Component {
 
     render() {
         const { length: count } = this.state.movies;
-        const { pageSize, currentPage, sortColumn } = this.state;
+        let currentPage = this.state.currentPage;
+        const { pageSize, sortColumn } = this.state;
 
         if (count === 0) return <p>There are no movies in the database.</p>;
 
         const { totalCount, data: movies } = this.getPagedData();
+
+        // Esto se agrego porque si eliminabamos todos los elementos de una pagina, la pagina quedaba en blanco,
+        // pero lo que queriamos es que se pasara a la ultima pagina llena, esto lo arregla
+        if(Math.ceil(totalCount / pageSize) < currentPage){
+            currentPage = currentPage - 1;
+            this.setState({currentPage})
+        }
 
         return (
             <div className="row">
