@@ -43,8 +43,10 @@ class Movies extends Component {
         const movies = this.state.movies.filter(m => m._id !== movie._id);
         this.setState({ movies });
         try {
-            const x = await deleteMovie(movie._id);
-        } catch (error) {
+            await deleteMovie(movie._id);
+        } catch (ex) {
+            if(ex.response && ex.response.status === 404)
+                alert("This movie has already been deleted.");
             this.setState({ originalMovies });
         }
 
