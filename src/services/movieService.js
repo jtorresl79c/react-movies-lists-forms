@@ -11,13 +11,22 @@ export function getMovies() {
 }
 
 export function saveMovie(movie){
-    const movieid = movie._id ? movie._id : false;
-    delete movie._id;
+    // Recuerda que movie es en si una referencia me parece, recuerda la inmutabilidad y que hay
+    // que respetarla, por lo tanto hacemos una copia del objeto movie y despues eliminamos la propiedad movie._id
+    // const movieid = movie._id ? movie._id : false;
+    // delete movie._id;
+
+    const movieid = movie._id
+
+    const body = { ...movie }; // Aqui se hace la copia del array, y ya no lo estamos referenciando
+    delete body._id
 
     if(movieid){
-        return httpServices.put(`${apiEndpoint}movies/${movieid}`, movie);
+        return httpServices.put(`${apiEndpoint}movies/${movieid}`, body);
     }
-    return httpServices.post(`${apiEndpoint}movies`, movie);
+
+    
+    return httpServices.post(`${apiEndpoint}movies`, body);
 }
 
 export function deleteMovie(id) {
