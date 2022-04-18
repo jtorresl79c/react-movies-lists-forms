@@ -4,7 +4,7 @@ import Joi from 'joi-browser'
 // import { getGenres } from '../services/fakeGenreService'
 import { getGenres } from '../services/genreService'
 // import {saveMovie,getMovie} from '../services/fakeMovieService'
-import {saveMovie,getMovie} from '../services/movieService'
+import { saveMovie, getMovie } from '../services/movieService'
 import { Redirect } from "react-router-dom"
 import Movies from './movies'
 
@@ -63,7 +63,7 @@ export default class movieForm extends Form {
         movie.numberInStock = this.state.data.stock
         movie.dailyRentalRate = this.state.data.rate
         console.log(movie)
-        
+
         // Para guardar los cambios se utiliza la funcion saveMovie del fakeMovieService.js
         // saveMovie(this.state.data) // Mosh simplemente hace esto para guardar, el puede hacer esto porque los nombres de las propiedades
         // que el saveMovie ocupa son iguales a los del data local, aqui no, los nombres de las propiedades locales del data son diferentes
@@ -75,17 +75,23 @@ export default class movieForm extends Form {
         this.props.history.push("/movies")
     }
 
-    async componentDidMount(){
+    // Desde donde llamamos este metodo ya se puedo async y el await pero es una regla que si se usa el await dentro de un metodo, se tiene que poner el async 
+    // en la declaracion del metodo de nuevo, puede verse redundante pero siempre se tiene que cumplir la regla
+    async populateGenres() {
         // Esta es una forma mas convencional de llenar una variable del state
         const { data: genres } = await getGenres()
         this.setState({ genres })
-        // console.log('hola mundo xsadsad')
-        // console.log(this.props.match.params.id)
-        // console.log(genres)
-        // console.log('conejo')
+    }
+
+    async populateMovie() {
 
         try {
-            const { data: movie } = await getMovie(this.props.match.params.id)
+            const movieId = this.props.match.params.id
+            if(movieId === 'new') return; // return hace que simplemente se termine de renderizar el componente, 
+            // no se ejecuta el codigo de abajo por lo tanto quedara en blanco el formulario, el backend ya se encarga de que si el id es igual a new
+            // en vez de editar se esta intentando agregar una nueva movie 
+
+            const { data: movie } = await getMovie(movieId)
             // Esta parte comentada funciona, y es como le hacemos siempre, pero aqui Mosh lo que hace es estructurar de una mejor
             // manera el arreglo de lo obtenido por una api, utilizando una funcion que hace la conversion de manera automatica mapToViewModel(movie)
             // let data = { ...this.state.data }
@@ -94,12 +100,12 @@ export default class movieForm extends Form {
             // data.rate = movie.dailyRentalRate
             // data.selectedGenre = movie.genre._id
             // this.setState( {data} )
-    
+
             // En vez de poner el codigo de creacion del objeto que ocupamos aqui en esta seccion, se hace por medio de la funcion
             // this.mapToViewModel
             let data = this.mapToViewModel(movie)
-    
-            this.setState( { data } )
+
+            this.setState({ data })
         } catch (ex) {
             // console.log('reedireccionar')
             // return <Redirect to="/not-found"/>
@@ -107,7 +113,13 @@ export default class movieForm extends Form {
             // loop infinito
         }
 
+    }
 
+    async componentDidMount() {
+
+        await this.populateGenres() // Si usamos await en cualquier metodo (en este caso es el componentDidMount) se tiene que poner el async,
+        // si nos vamos al mero metodo vemos que de nuevo ponemos el async y el await, aunque aca ya se puso, se tiene que volver a poner
+        await this.populateMovie()
     }
 
     mapToViewModel(movie) {
@@ -122,7 +134,7 @@ export default class movieForm extends Form {
     checkIfMovieExists = (movieid) => {
 
         return getMovie(movieid)
-    
+
     }
 
     render() {
