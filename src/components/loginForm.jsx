@@ -1,6 +1,7 @@
 import React from 'react'
 import Joi from 'joi-browser'
 import Forms from './common/form'
+import { login } from '../services/authService'
 
 
 export default class loginForm extends Forms {
@@ -23,9 +24,11 @@ export default class loginForm extends Forms {
 
     }
 
-    doSubmit = () => {
-        const username = this.state.data.username
-        console.log(username)
+    doSubmit = async () => {
+        const { data } = this.state
+        const { data: jwt } = await login(data.username, data.password)
+
+        console.log(jwt)
     }
 
     render() {
