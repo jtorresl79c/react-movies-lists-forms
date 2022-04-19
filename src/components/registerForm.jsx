@@ -40,7 +40,7 @@ export default class registerForm extends Form {
     render() {
         return (
             <div>
-                <h1>Login</h1>
+                <h1>Register</h1>
                 <form onSubmit={this.handleSubmit}>
                     {/* El primer parametro SIEMPRE tiene que ser igual al nombre de la propiedad dentro del this.data */}
                     {this.renderInput('username', 'Username')}
