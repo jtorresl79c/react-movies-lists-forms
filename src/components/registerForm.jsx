@@ -40,7 +40,23 @@ export default class registerForm extends Form {
         console.log(username)
 
         try {
-            await userService.register(this.state.data)
+            // AJAX = http response
+            const response = await userService.register(this.state.data) // Esto retorna una respuesta http, recuerda que este
+            // tipo de respuesta retorna muchas cosas en su cuerpo, el que siempre usamos nosotros es data, el data de esta
+            // respuesta retorna un objecto que contiene la info del usuario recien registrado, si bien eso es bueno de saber
+            // lo interesante es que al momento de registrar un usuario, el servidor nos retorna un token jwt, recuerda que en un
+            // spa tener un jwt valido es sinonimo de estar logueado, por lo que podriamos decir que al momento de registrarse nos
+            // podemos autologear
+
+
+            // Los headers que empiezan con 'x' son headers personalizados, que los headers personalizas empiezen con 'x' es un estandar en la industria.
+            let token = response.headers['x-auth-token'] // El jwt que el AJAX retorna no se encuentra en el data, como se dijo 
+            // arriba en el data esta exclusivamente la info del registro, el jwt se encuentra en los headers de la respuesta,
+            // en el backend: routes/user.js/router.post es en donde se asigna el header a la respuesta y con ello se le da el jwt.  
+            localStorage.setItem('token', token) // Seteamos el token en el localStorage, para que el usuario pueda acceder a la aplicacion, se puede decir
+            // que con esto logueamos al ususario automaticamente
+
+            this.props.history.push('/')
         } catch (ex) { // Aqui se pone ex en vez de error porque realmente esperamos una
             // excepcion, y no un error (aunque recuerda que al final son lo mismo, solo
             // es semantica)
