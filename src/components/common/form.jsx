@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Joi from 'joi-browser'
 import Input from './input'
 import Select from './select'
+import movieForm from '../movieForm'
 
 export default class form extends Component {
     constructor(props) {
@@ -137,13 +138,20 @@ export default class form extends Component {
 
     renderSelect = (label, name, selectedPropertyName, data) => {
         // En el video tambien se envia: errors[name], nosotros no lo hacemos porque si es 0 simeplemente el form no se puede mandar, es muy dificil que se requiera,
-        // de igual forma se puede poner y acomodar el codigo para que se imprima el error 
+        // de igual forma se puede poner y acomodar el codigo para que se imprima el error
+
+        // data = los <option> del select
+
+        // otra alternativo hubiera sido enviar el selectedValue desde movieForm.jsx (que hubiera sido mejor) pero asi lo dejamos
+        const selectedValue = this.state.data[selectedPropertyName]
+
         return (
             <Select label={label}
                 name={name}
                 data={data}
                 onChange={this.handleChangeSelect}
-                value={data[selectedPropertyName]}
+                // value={data[selectedPropertyName]} antes decia esto, no se porque, esto no servia, por eso se corrigio
+                value={selectedValue}
                 selectedPropertyName={selectedPropertyName}
             />
         );
