@@ -25,10 +25,23 @@ export default class loginForm extends Forms {
     }
 
     doSubmit = async () => {
-        const { data } = this.state
-        const { data: jwt } = await login(data.username, data.password)
+        try {
+            const { data } = this.state
+            await login(data.username, data.password)
+        } catch (ex) {
+            // Recuerda que HAY UN MUNDO DE ERRORES pero no por eso debemos pensar en cada error, porque se supone
+            // que nuestra app la mayoria del tiempo debe funcionar correctamente, recuerda los 10- Expected vs Unexpected Errors
+            // los errores inesperados son errores genericos que ya capturamos con los interceptors, mientras que los Expected son
+            // errores que no son inesperados, por ejemplo, si eliminamos un usuario que no existe, el error es esperado, en este caso
+            // de abajo un error 400 significa 'Invalid email or password', algo esperado y logico, no un error de servidor.
+            if(ex.response && ex.response.status === 400){
+                const errors = { ...this.state.errors }
+                errors.username = ex.response.data
+                this.setState( { errors } )
+            }
+        }
 
-        console.log(jwt)
+        
     }
 
     render() {
