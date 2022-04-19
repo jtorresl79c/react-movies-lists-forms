@@ -1,13 +1,13 @@
 import httpServices from "./httpServices";
 // import config from '../config.json';
-import { apiEndpoint } from '../config.json';
+import { apiUrl } from '../config.json';
 
 export function getMovie(id) {
-    return httpServices.get(`${apiEndpoint}movies/${id}`);
+    return httpServices.get(`${apiUrl}movies/${id}`);
 }
 
 export function getMovies() {
-    return httpServices.get(`${apiEndpoint}movies`);
+    return httpServices.get(`${apiUrl}movies`);
 }
 
 export function saveMovie(movie){
@@ -22,13 +22,13 @@ export function saveMovie(movie){
     delete body._id
 
     if(movieid){
-        return httpServices.put(`${apiEndpoint}movies/${movieid}`, body);
+        return httpServices.put(`${apiUrl}movies/${movieid}`, body);
     }
 
     
-    return httpServices.post(`${apiEndpoint}movies`, body);
+    return httpServices.post(`${apiUrl}movies`, body);
 }
 
 export function deleteMovie(id) {
-    return httpServices.delete(`${apiEndpoint}movies/${id}`);
+    return httpServices.delete(`${apiUrl}movies/${id}`);
 }
