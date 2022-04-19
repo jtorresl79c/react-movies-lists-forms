@@ -1,6 +1,8 @@
 import React from 'react'
 import Form from './common/form'
 import Joi from 'joi-browser'
+// import { register } from '../services/userService' // Solo importamos uno en especifico
+import * as userService from '../services/userService' // Importamos todo
 
 export default class registerForm extends Form {
     constructor(props) {
@@ -17,7 +19,8 @@ export default class registerForm extends Form {
     schema = {
         username: Joi.string()
             .required()
-            .label('Username'), 
+            .label('Username')
+            .email(), 
         // .label solo cambia la primera palabra, la primera palara es el nombre de la propiedad, por default
         // se mostraria -- "username" is not allowed to be empty -- PERO al poner label() ahora se ve -- "Username" is not allowed to be empty -- 
         // mismo caso para password (la propiedad abajo)
@@ -32,9 +35,29 @@ export default class registerForm extends Form {
 
     // doSubmit() tambien tiene que estar siempre, porque no siempre vamos a querer hacer lo mismo cuando enviemos un 
     // formulario (tambien porque al darle submit este se ejecuta en el form.jsx)
-    doSubmit = () => {
+    doSubmit = async () => {
         const username = this.state.data.username
         console.log(username)
+
+        try {
+            await userService.register(this.state.data)
+        } catch (ex) { // Aqui se pone ex en vez de error porque realmente esperamos una
+            // excepcion, y no un error (aunque recuerda que al final son lo mismo, solo
+            // es semantica)
+
+            // Aqui ex.response lo ponemos porque queremos que esto se ejecute solo si existe un
+            // error y el .status === 400 
+            if(ex.response && ex.response.status === 400){
+                // Esto es cosa de la libreria JOI, recuperamos cualquier error que pueda existir
+                // en this.state.errors y lo recuperamos para no borrar un mensaje que ya exista
+                const errors = {...this.state.errors}
+                // Aqui se pone el error que retorno el servidor
+                errors.username = ex.response.data
+                
+                this.setState({ errors })
+            }
+        }
+
     }
 
     render() {
