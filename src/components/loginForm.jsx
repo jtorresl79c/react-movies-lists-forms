@@ -27,7 +27,9 @@ export default class loginForm extends Forms {
     doSubmit = async () => {
         try {
             const { data } = this.state
-            await login(data.username, data.password)
+            const { data: jwt } = await login(data.username, data.password)
+            localStorage.setItem('token', jwt)
+            this.props.history.push('/')
         } catch (ex) {
             // Recuerda que HAY UN MUNDO DE ERRORES pero no por eso debemos pensar en cada error, porque se supone
             // que nuestra app la mayoria del tiempo debe funcionar correctamente, recuerda los 10- Expected vs Unexpected Errors
