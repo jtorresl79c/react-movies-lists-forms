@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 
-import jwtDecode from "jwt-decode";
+import { getCurrentUser } from "./services/authService";
 
 import Movies from "./components/movies";
 import MovieForm from "./components/movieForm";
@@ -25,17 +25,8 @@ class App extends Component {
     }
 
     componentDidMount(){
-        try {
-            const jwt = localStorage.getItem('token')
-            const user = jwtDecode(jwt) // Si la variable token esta vacia (que no exista en el localStorage el token)
-            // entonces al hacer esto jwtDecode(null) habra un error, podriamos pensar que antes de ejecutar esta linea
-            // de codigo comprobar si el token existe o no, en el caso de no existir reedireccionar, el problema es que
-            // si nos fijamos bien este archivo es el App.js osea que SIEMPRE se va a ejecutar y si bien podemos reedireccionar
-            // eso no evitara que se arroge un error, podemos usar un try catch para evitar el error y despues reedireccionar al
-            // login
-            this.setState({user})
-        } catch (ex) {
-        }
+        const user = getCurrentUser()
+        this.setState({ user })
     }
 
     render() {

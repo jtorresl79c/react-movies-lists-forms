@@ -3,6 +3,7 @@ import Form from './common/form'
 import Joi from 'joi-browser'
 // import { register } from '../services/userService' // Solo importamos uno en especifico
 import * as userService from '../services/userService' // Importamos todo
+import { loginWithJwt } from '../services/authService'
 
 export default class registerForm extends Form {
     constructor(props) {
@@ -53,8 +54,12 @@ export default class registerForm extends Form {
             let token = response.headers['x-auth-token'] // El jwt que el AJAX retorna no se encuentra en el data, como se dijo 
             // arriba en el data esta exclusivamente la info del registro, el jwt se encuentra en los headers de la respuesta,
             // en el backend: routes/user.js/router.post es en donde se asigna el header a la respuesta y con ello se le da el jwt.  
-            localStorage.setItem('token', token) // Seteamos el token en el localStorage, para que el usuario pueda acceder a la aplicacion, se puede decir
+            
+            
+            // localStorage.setItem('token', token) // Seteamos el token en el localStorage, para que el usuario pueda acceder a la aplicacion, se puede decir
             // que con esto logueamos al ususario automaticamente
+            loginWithJwt(token) // Esta funcion se encuentra en authService.js, la cual se encarga de hacer el login con el jwt
+
 
             this.props.history.push('/')
         } catch (ex) { // Aqui se pone ex en vez de error porque realmente esperamos una

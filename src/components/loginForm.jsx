@@ -27,11 +27,20 @@ export default class loginForm extends Forms {
     doSubmit = async () => {
         try {
             const { data } = this.state
-            const { data: jwt } = await login(data.username, data.password)
-            localStorage.setItem('token', jwt)
+
+            // No es que esto este "mal" el problema es que la logica del logueo deberia
+            // de estar en un solo lugar, esto facilmente se puede mover a un archivo
+            // separado como authService.js en donde se esta controlando el logueo en un 
+            // solo lugar
+            // const { data: jwt } = await login(data.username, data.password)
+            // localStorage.setItem('token', jwt)
+            await login(data.username, data.password) // De esta forma se hace el login simplemente llamando una funcion,
+            // la responsabilidad de setear el token en el localStorage esta en authService.js
+
             // this.props.history.push('/')
             window.location = '/' // Esto hara que se redireccione a la pagina principal PERO recargando la pagina,
             // de esta forma cuando se mande a llamar a localStorage.getItem('token') en App.js NO SE OBTENDRA UN VALOR NULO
+
         } catch (ex) {
             // Recuerda que HAY UN MUNDO DE ERRORES pero no por eso debemos pensar en cada error, porque se supone
             // que nuestra app la mayoria del tiempo debe funcionar correctamente, recuerda los 10- Expected vs Unexpected Errors
