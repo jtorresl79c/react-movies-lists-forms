@@ -30,6 +30,12 @@ const NavBar = ({ user }) => {
                         Rentals
                     </NavLink>
 
+                    {/* 
+                        Existe un problema con esto, cuando se haga login y se setee el jwt en el localStorage
+                        y se reedireccione al dashboard, se seguira viendo login y register (aunque ya se este logueado),
+                        esto pasa porque el localStorege no se actualiza al menos que la pagina se recargue, es por eso
+                        que en vez de usar un replace, se usa un window.location, para ver esto ir a: loginForm.jsx 
+                    */}
                     {
                         !user && (
                             <React.Fragment>
