@@ -19,7 +19,7 @@ class App extends Component {
     constructor(props){
         super(props)
         this.state = {
-            user: {}
+            user: null
         }
     }
 
@@ -40,7 +40,7 @@ class App extends Component {
     render() {
         return (
             <React.Fragment>
-                <NavBar />
+                <NavBar user={this.state.user} />
                 <main className="container">
                     <Switch>
                         <Route path="/register" component={RegisterForm} />

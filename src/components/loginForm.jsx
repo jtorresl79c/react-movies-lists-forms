@@ -29,7 +29,9 @@ export default class loginForm extends Forms {
             const { data } = this.state
             const { data: jwt } = await login(data.username, data.password)
             localStorage.setItem('token', jwt)
-            this.props.history.push('/')
+            // this.props.history.push('/')
+            window.location = '/' // Esto hara que se redireccione a la pagina principal PERO recargando la pagina,
+            // de esta forma cuando se mande a llamar a localStorage.getItem('token') en App.js NO SE OBTENDRA UN VALOR NULO
         } catch (ex) {
             // Recuerda que HAY UN MUNDO DE ERRORES pero no por eso debemos pensar en cada error, porque se supone
             // que nuestra app la mayoria del tiempo debe funcionar correctamente, recuerda los 10- Expected vs Unexpected Errors
