@@ -3,7 +3,7 @@ import Form from './common/form'
 import Joi from 'joi-browser'
 // import { register } from '../services/userService' // Solo importamos uno en especifico
 import * as userService from '../services/userService' // Importamos todo
-import { loginWithJwt } from '../services/authService'
+import auth from '../services/authService'
 
 export default class registerForm extends Form {
     constructor(props) {
@@ -58,7 +58,7 @@ export default class registerForm extends Form {
             
             // localStorage.setItem('token', token) // Seteamos el token en el localStorage, para que el usuario pueda acceder a la aplicacion, se puede decir
             // que con esto logueamos al ususario automaticamente
-            loginWithJwt(token) // Esta funcion se encuentra en authService.js, la cual se encarga de hacer el login con el jwt
+            auth.loginWithJwt(token) // Esta funcion se encuentra en authService.js, la cual se encarga de hacer el login con el jwt
 
 
             this.props.history.push('/')

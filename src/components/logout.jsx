@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 
-import { logout } from '../services/authService'
+import auth from '../services/authService'
 
 export default class Logout extends Component {
 
     componentDidMount(){
-        logout()
+        auth.logout()
         window.location.href = '/' // Se pone esto en vez de un push o replace porque al regresar
         // a la pagina principal queremos que se lea de nuevo el localStorage y al menos que la pagina
         // se recargue completamente la app no sabra que ya se elimino que el token del localStorage

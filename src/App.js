@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 
-import { getCurrentUser } from "./services/authService";
+import auth from "./services/authService";
 
 import Movies from "./components/movies";
 import MovieForm from "./components/movieForm";
@@ -25,7 +25,7 @@ class App extends Component {
     }
 
     componentDidMount(){
-        const user = getCurrentUser()
+        const user = auth.getCurrentUser()
         this.setState({ user })
     }
 

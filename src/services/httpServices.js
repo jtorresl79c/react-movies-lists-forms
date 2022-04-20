@@ -1,9 +1,8 @@
 import axios from 'axios'
-import { getJwt } from './authService'
+import auth from './authService'
 
 // axios.defaults.headers.common.post['Content-Type'] = 'application/json' // Ejemeplo de que se puede usar con solo post
-console.log('energia', getJwt())
-axios.defaults.headers.common['x-auth-token'] = getJwt()
+axios.defaults.headers.common['x-auth-token'] = auth.x()
 
 axios.interceptors.response.use(null, error =>{
     const expectedError = error.response && error.response.status >= 400 && error.response.status < 500

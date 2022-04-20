@@ -1,7 +1,7 @@
 import React from 'react'
 import Joi from 'joi-browser'
 import Forms from './common/form'
-import { login } from '../services/authService'
+import auth from '../services/authService'
 
 
 export default class loginForm extends Forms {
@@ -34,7 +34,7 @@ export default class loginForm extends Forms {
             // solo lugar
             // const { data: jwt } = await login(data.username, data.password)
             // localStorage.setItem('token', jwt)
-            await login(data.username, data.password) // De esta forma se hace el login simplemente llamando una funcion,
+            await auth.login(data.username, data.password) // De esta forma se hace el login simplemente llamando una funcion,
             // la responsabilidad de setear el token en el localStorage esta en authService.js
 
             // this.props.history.push('/')
