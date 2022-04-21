@@ -12,13 +12,19 @@ import _ from "lodash";
 import httpServices from "../services/httpServices";
 
 class Movies extends Component {
-    state = {
-        movies: [],
-        genres: [],
-        currentPage: 1,
-        pageSize: 2,
-        sortColumn: { path: "title", order: "asc" }
-    };
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            movies: [],
+            genres: [],
+            currentPage: 1,
+            pageSize: 2,
+            sortColumn: { path: "title", order: "asc" }
+        }
+        // console.log(this.props.user) // Hacer esto aqui siempre retornara un null, es hasta render en donde tenemos los
+        // props disponibles al parecer
+    }
 
     async componentDidMount() {
         // const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
@@ -100,6 +106,8 @@ class Movies extends Component {
         let currentPage = this.state.currentPage;
         const { pageSize, sortColumn } = this.state;
 
+        const user = this.props.user
+
         if (count === 0) return <p>There are no movies in the database.</p>;
 
         const { totalCount, data: movies } = this.getPagedData();
@@ -121,7 +129,7 @@ class Movies extends Component {
                     />
                 </div>
                 <div className="col">
-                    <Link to="/movies/new" className="btn btn-primary">New movie</Link>
+                    {user && <Link to="/movies/new" className="btn btn-primary">New movie</Link>}
                     <p>Showing {totalCount} movies in the database.</p>
                     <MoviesTable
                         movies={movies}

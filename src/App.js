@@ -30,6 +30,8 @@ class App extends Component {
     }
 
     render() {
+        // console.log(this.state.user)
+        const x = this.state.user
         return (
             <React.Fragment>
                 <NavBar user={this.state.user} />
@@ -40,7 +42,9 @@ class App extends Component {
                         <Route path="/logout" component={Logout} />
                         <Route path="/movies/new" component={NewMovie} />
                         <Route path="/movies/:id" component={MovieForm} />
-                        <Route path="/movies" component={Movies} />
+                        {/* <Route path="/movies" component={Movies} /> */}
+                        <Route path="/movies" render={ props => <Movies {...props} user={x}/> } />
+
                         <Route path="/customers" component={Customers} />
                         <Route path="/rentals" component={Rentals} />
                         <Route path="/not-found" component={NotFound} />
