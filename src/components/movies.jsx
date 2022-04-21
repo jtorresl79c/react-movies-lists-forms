@@ -43,7 +43,6 @@ class Movies extends Component {
         const movies = this.state.movies.filter(m => m._id !== movie._id);
         this.setState({ movies });
         try {
-            console.log('se eliminara el archivo')
             await deleteMovie(movie._id);
         } catch (ex) {
             if(ex.response && ex.response.status === 404)
