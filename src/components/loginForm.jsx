@@ -38,8 +38,16 @@ export default class loginForm extends Forms {
             // la responsabilidad de setear el token en el localStorage esta en authService.js
 
             // this.props.history.push('/')
-            window.location = '/' // Esto hara que se redireccione a la pagina principal PERO recargando la pagina,
+            // window.location = '/' // Esto hara que se redireccione a la pagina principal PERO recargando la pagina,
             // de esta forma cuando se mande a llamar a localStorage.getItem('token') en App.js NO SE OBTENDRA UN VALOR NULO
+            
+            // #PRLFDS7453
+            const { state } = this.props.location // this.props.location.state contiene la direccion de la ruta a donde
+            // originalmente estabamos intentando acceder
+            window.location = state ? state.from.pathname : '/' // PERO recuerda que aveces vamos a intentar entrar directamente al 
+            // componente loginForm.jsx, en esos casos this.state.locataion.state va a estar vacio, porque nunca mandamos nada desde
+            // ProtectedRoute es por ello que si state esta vacio, pues mandamos directamente a la raiz como originalmente haciamos.
+
 
         } catch (ex) {
             // Recuerda que HAY UN MUNDO DE ERRORES pero no por eso debemos pensar en cada error, porque se supone
