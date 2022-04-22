@@ -2,10 +2,10 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import auth from '../../services/authService';
 
-const Protectedroute = ( { path, component: Component, render } ) => {
+const Protectedroute = ( { component: Component, render, ...rest } ) => {
     return (
-        <Route 
-            path={path} 
+        <Route
+            {...rest}
             render={props => {
                 if (!auth.getCurrentUser())
                     return <Redirect to='/login' />
