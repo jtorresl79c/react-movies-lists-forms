@@ -1,4 +1,5 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 import Joi from 'joi-browser'
 import Forms from './common/form'
 import auth from '../services/authService'
@@ -21,7 +22,7 @@ export default class loginForm extends Forms {
     }
 
     componentDidMount() {
-
+        // if(auth.getCurrentUser()) return this.props.history.push('/movies') // Esto funciona
     }
 
     doSubmit = async () => {
@@ -68,8 +69,10 @@ export default class loginForm extends Forms {
     render() {
         // const { data, errors } = this.state
         // console.log(Object.keys(errors).length)
+        if(auth.getCurrentUser()) return <Redirect to='/' />
         return (
             // Select text to wrap -> CTRL+SHIFT+P -> Write wrap
+
 
             <div>
                 <h1>Login</h1>
