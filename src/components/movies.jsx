@@ -19,7 +19,7 @@ class Movies extends Component {
             movies: [],
             genres: [],
             currentPage: 1,
-            pageSize: 2,
+            pageSize: 10,
             sortColumn: { path: "title", order: "asc" }
         }
         // console.log(this.props.user) // Hacer esto aqui siempre retornara un null, es hasta render en donde tenemos los
