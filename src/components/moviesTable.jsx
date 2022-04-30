@@ -22,24 +22,24 @@ class MoviesTable extends Component {
         }
     ];
 
+    deleteColumn = {
+        key: "delete",
+        content: movie => (
+            <button
+                onClick={() => this.props.onDelete(movie)}
+                className="btn btn-danger btn-sm"
+            >
+                Delete
+            </button>
+        )
+    }
+
     constructor(props) {
         super(props)
         let columns = this.columns // Esto es una referencia, no una copia, para que fuera una
         // copia se tendria que poner this.columns.slice()
         const user = auth.getCurrentUser()
-        if (user && user.isAdmin) {
-            columns.push({
-                key: "delete",
-                content: movie => (
-                    <button
-                        onClick={() => this.props.onDelete(movie)}
-                        className="btn btn-danger btn-sm"
-                    >
-                        Delete
-                    </button>
-                )
-            })
-        }
+        if (user && user.isAdmin) columns.push(this.deleteColumn)
 
     }
 
