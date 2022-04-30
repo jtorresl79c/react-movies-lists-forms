@@ -22,13 +22,11 @@ class MoviesTable extends Component {
         }
     ];
 
-    render() {
-        const { movies, onSort, sortColumn } = this.props;
-
-        let columns = this.columns.slice()
-        // console.log(columns)
+    constructor(props) {
+        super(props)
+        let columns = this.columns // Esto es una referencia, no una copia, para que fuera una
+        // copia se tendria que poner this.columns.slice()
         const user = auth.getCurrentUser()
-        // console.log(user)
         if (user && user.isAdmin) {
             columns.push({
                 key: "delete",
@@ -43,9 +41,14 @@ class MoviesTable extends Component {
             })
         }
 
+    }
+
+    render() {
+        const { movies, onSort, sortColumn } = this.props;
+
         return (
             <Table
-                columns={columns}
+                columns={this.columns}
                 data={movies}
                 sortColumn={sortColumn}
                 onSort={onSort}
